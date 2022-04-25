@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 80%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        @keyframes animatetop {
+            from {
+                top: -300px;
+                opacity: 0
+            }
+
+            to {
+                top: 0;
+                opacity: 1
+            }
+        }
+
+        /* The Close Button */
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .modal-body {
+            padding: 2px 16px;
+        }
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+        }
+    </style>
+</head>
+
+
+<body>
+    <input id="text" type="text" value="Enter details">
+    <input id="add" type="button" value="Add" onclick="addItem()">
+    <ul id="lists"></ul>
+    <p id="val"></p>
+    <p id="val2"></p>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;
+                </span>
+                <p>Edit Todo</p>
+            </div>
+            <div class="modal-body">
+                <br />
+                <input id="updatetxt" value="text">
+                <input id="submitupdatedtxt" type="button" value="Update">
+                <br />
+                <br />
+            </div>
+        </div>
+    </div>
+    <script>
+        var lists = document.getElementById("lists");
+        var cnt = 0;
+        function Createbtn(a) {
+            var but = document.createElement("input");
+            but.value = a;
+            but.type = "button";
+            but.className = a;
+            but.id = a + cnt;
+            return but;
+        }
+        function AddToList(msg) {
+            var p = document.createElement("li");
+            var del = Createbtn("delete");
+            var edit = Createbtn("edit");
+            var txt = document.createTextNode(msg);
+            var pa = document.createElement('span');
+            pa.id = "text" + cnt; pa.value = "text";
+            pa.appendChild(txt);
+            p.appendChild(pa);
+            p.appendChild(del);
+            p.appendChild(edit);
+            p.id = cnt;
+            lists.appendChild(p);
+            cnt++;
+        }
+        function addItem() {
+            var l = document.getElementById("text");
+            AddToList(l.value);
+            l.value = "Enter details";
+        }
+
+        var btn = document.querySelector('ul');
+        btn.addEventListener("click", function (e) {
+            let element = e.target;
+            if (element.value == 'edit') {
+                let modal = document.getElementById("myModal");
+                let oldli = e.target.parentNode;
+                let pa = document.getElementById("text" + oldli.id);
+                let oldtxt = pa.innerText;
+                let newinput = document.getElementById("updatetxt");
+                newinput.value = oldtxt;
+                let submit = document.getElementById("submitupdatedtxt");
+                submit.onclick = function () {
+                    pa.innerHTML = newinput.value;
+                    modal.style.display = "none";
+                }
+                var span = document.getElementsByClassName("close")[0];
+                modal.style.display = "block";
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            }
+            else if (element.value == "text") {
+                console.log("Text Clicked: " + element.innerText);
+            }
+            else if (element.value == "delete") {
+                let li = e.target.parentNode;
+                lists.removeChild(li);
+            }
+        }
+        ) 
+    </script>
+</body>
+
+</html>
